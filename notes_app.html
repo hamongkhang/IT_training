@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>To Do List</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      .inputCheckbox {
+        display: none;
+      }
+
+      .btn {
+        background-color: #0259a0;
+        padding: 8px 24px;
+        border-radius: 3px;
+        color: white;
+        cursor: pointer;
+      }
+
+      .modal {
+        position: fixed;
+        z-index: 1000;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.65);
+        display: none;
+      }
+
+      #control-modal:checked ~ .modal {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        animation: fade 0.6s forwards;
+        opacity: 0;
+      }
+
+      @keyframes fade {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      .modal-content {
+        background-color: white;
+        width: 512px;
+        border-radius: 3px;
+      }
+
+      .modal-header {
+        padding: 12px 24px;
+        text-align: center;
+        position: relative;
+      }
+
+      .modal-close {
+        position: absolute;
+        background-color: gray;
+        color: white;
+        width: 24px;
+        height: 24px;
+        line-height: 24px;
+        border-radius: 50%;
+        top: -10px;
+        right: -10px;
+        cursor: pointer;
+      }
+
+      .modal-body {
+        padding: 12px 24px 24px;
+      }
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: "Roboto", sans-serif;
+        --text-color: #333;
+        color: var(--text-color);
+        background-color: #e0f0fd;
+      }
+      .container {
+        text-align: center;
+        width: 40%;
+        margin: auto;
+        color: #181818;
+        min-height: 90vh;
+        margin-top: 2%;
+      }
+      .todo {
+        width: 100%;
+        padding-bottom: 15px;
+        background: #3366ff;
+        border-top-left-radius: 20px;
+        border-top-right-radius: 20px;
+        color: #ffffff;
+      }
+      h1 {
+        margin-bottom: 20px;
+        font-size: 80px;
+        margin-top: 0;
+        padding-left: 10px;
+      }
+      input {
+        background: none;
+        outline: none;
+        border: none;
+        border-bottom: 2px solid #ffffff;
+        color: #ffffff;
+        padding: 8px;
+        font-size: 20px;
+      }
+      .list-todo {
+        height: 60vh;
+        background-color: #ffffff;
+        overflow-x: scroll;
+      }
+      #todo {
+        padding: 0 10px 0 10px;
+      }
+      #todo li {
+        list-style: none;
+        font-size: 16px;
+        width: 100%;
+        max-width: 100%;
+        display: flex;
+        --webkit-display: flex;
+        align-items: flex-start;
+        text-align: justify;
+        margin-bottom: 15px;
+        border-bottom: 1px solid #777777;
+        padding-bottom: 8px;
+      }
+      #todo li.completed {
+        text-decoration: line-through;
+      }
+
+      #todo li.uncompleted {
+        text-decoration: none;
+        color: black;
+      }
+      #todo li input {
+        margin-right: 10px;
+      }
+      #todo li .editButton {
+        margin-right: 5px;
+        margin-left: auto;
+        outline: none;
+        border: none;
+        border-radius: 200px;
+        background-color: #3366ff;
+        color: #ffffff;
+        width: 20%;
+        height: 5vh;
+      }
+      #todo li .deleteButton {
+        outline: none;
+        border: none;
+        border-radius: 200px;
+        background-color: #ff3333;
+        color: #ffffff;
+        width: 20%;
+        height: 5vh;
+      }
+      .submit {
+        width: 40%;
+        height: 50px;
+        background-color: #ffd333;
+        border-radius: 5px;
+        margin: 10px 20px 10px 20px;
+      }
+      .handleButton {
+        width: 10px;
+        background-color: #ffd333;
+      }
+      .inputEdit {
+        background-color: #00ff08;
+        color: #181818;
+      }
+    </style>
+  </head>
+  <body>
+    <input type="checkbox" id="control-modal" class="inputCheckbox" />
+    <div class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>EDIT</h3>
+          <label for="control-modal" class="modal-close">X</label>
+        </div>
+        <div class="modal-body">
+          <div id="edit_modal"></div>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="todo">
+        <h1>Todo</h1>
+        <p>What do you want to get done today?</p>
+        <input type="text" id="input" placeholder="Enter task" />
+        <br/ >
+        <button class="submit" id="input" onclick="addTodo()">Submit</button>
+      </div>
+      <div class="list-todo">
+        <ul id="todo"></ul>
+      </div>
+    </div>
+    <script>
+      let todoList = [];
+      if (localStorage.getItem("todos")) {
+        todoList = JSON.parse(localStorage.getItem("todos"));
+      } else {
+        localStorage.setItem("todos", JSON.stringify(todoList));
+      }
+      const addTodo = () => {
+        var newTodo = document.getElementById("input").value;
+        todoList.push(newTodo);
+        localStorage.setItem("todos", JSON.stringify(todoList));
+        window.location.reload();
+      };
+      const readTodo = () => {
+        let show = "";
+        for (var i in todoList) {
+          show += "<li>";
+          show += todoList[i];
+          show += `<button class="editButton" onclick="onEdit(${i})"><label for="control-modal">Edit</label></button>`;
+          show += `<button class="deleteButton" onclick="deleteTodo(${i})">Delete</button>`;
+          show += "</li>";
+        }
+        document.getElementById("todo").innerHTML = show;
+      };
+      const editTodo = (index) => {
+        for (var i in todoList) {
+          if (i == index) {
+            todoList[i] = document.getElementById("inputEdit").value;
+          }
+        }
+        localStorage.setItem("todos", JSON.stringify(todoList));
+        window.location.reload();
+      };
+      const onEdit = (index) => {
+        let dataEdit = "";
+        for (var i in todoList) {
+          if (i == index) {
+            dataEdit += `<input type="text" id="inputEdit" class="inputEdit" value="${todoList[i]}" />`;
+            dataEdit += `<button class="submit" id="input" onclick="editTodo(${i})">Submit</button>`;
+          }
+          document.getElementById("edit_modal").innerHTML = dataEdit;
+        }
+      };
+      const deleteTodo = (index) => {
+        todoList.splice(index, 1);
+        localStorage.setItem("todos", JSON.stringify(todoList));
+        window.location.reload();
+      };
+      readTodo();
+    </script>
+  </body>
+</html>
