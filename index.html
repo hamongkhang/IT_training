@@ -9,6 +9,10 @@
       rel="stylesheet"
     />
     <style>
+      body {
+        font-family: "lato", sans-serif;
+        background-color: rgb(128, 230, 196);
+      }
       .inputCheckbox {
         display: none;
       }
@@ -31,6 +35,16 @@
         background-color: rgba(0, 0, 0, 0.65);
         display: none;
       }
+      .modal_add {
+        position: fixed;
+        z-index: 1000;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.65);
+        display: none;
+      }
 
       #control-modal:checked ~ .modal {
         display: flex;
@@ -39,7 +53,13 @@
         animation: fade 0.6s forwards;
         opacity: 0;
       }
-
+      #control-modal-add:checked ~ .modal_add {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        animation: fade 0.6s forwards;
+        opacity: 0;
+      }
       @keyframes fade {
         from {
           opacity: 0;
@@ -77,112 +97,143 @@
       .modal-body {
         padding: 12px 24px 24px;
       }
-      html,
-      body {
-        margin: 0;
-        padding: 0;
-        font-family: "Roboto", sans-serif;
-        --text-color: #333;
-        color: var(--text-color);
-        background-color: #e0f0fd;
-      }
+
       .container {
-        text-align: center;
-        width: 40%;
-        margin: auto;
-        color: #181818;
-        min-height: 90vh;
-        margin-top: 2%;
-      }
-      .todo {
-        width: 100%;
-        padding-bottom: 15px;
-        background: #3366ff;
-        border-top-left-radius: 20px;
-        border-top-right-radius: 20px;
-        color: #ffffff;
+        max-width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+        padding-left: 10px;
+        padding-right: 10px;
       }
       h1 {
+        font-size: 26px;
+        margin: 20px 0;
+        text-align: center;
+      }
+      .responsive-table li {
+        border-radius: 3px;
+        padding: 25px 30px;
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 25px;
+      }
+      .responsive-table .table-header {
+        background-color: #0099ff;
+        font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+      }
+      .responsive-table .table-row {
+        background-color: #ffffff;
+        box-shadow: 0px 0px 9px 0px rgba(0, 0, 0, 0.1);
+      }
+      .responsive-table .col-1 {
+        flex-basis: 10%;
+      }
+      .responsive-table .col-2 {
+        flex-basis: 40%;
+      }
+      .responsive-table .col-3 {
+        flex-basis: 25%;
+      }
+      .responsive-table .col-4 {
+        flex-basis: 25%;
+      }
+      @media (max-width: 767px) {
+        .responsive-table .table-header {
+          display: none;
+        }
+        .responsive-table li {
+          display: block;
+        }
+        .responsive-table .col {
+          flex-basis: 100%;
+        }
+        .responsive-table .col {
+          display: flex;
+          padding: 10px 0;
+        }
+        .responsive-table .col:before {
+          color: #6c7a89;
+          padding-right: 10px;
+          content: attr(data-label);
+          flex-basis: 50%;
+          text-align: right;
+        }
+      }
+      .edit_button {
+        width: 80px;
+        height: 40px;
+        border-radius: 6px;
+        margin-right: 6px;
+        background-color: #00ff5e;
+      }
+      .edit_button:hover {
+        background-color: #eeff00;
+      }
+      .delete_button:hover {
+        background-color: #eeff00;
+      }
+      .delete_button {
+        width: 80px;
+        height: 40px;
+        border-radius: 6px;
+        background-color: red;
+      }
+      .create_button {
+        width: 200px;
+        height: 60px;
         margin-bottom: 20px;
-        font-size: 80px;
-        margin-top: 0;
+        border-radius: 4px;
+        background-color: rgb(151, 0, 245);
+      }
+      .submit_add_button,
+      .submit_edit_button {
+        width: 200px;
+        height: 40px;
+        margin-bottom: 20px;
+        border-radius: 4px;
+        background-color: rgb(245, 0, 110);
+      }
+      .title_modal {
+        color: rgb(249, 49, 82);
+      }
+      .input_name_add,
+      .input_name_edit {
+        width: 83%;
+        height: 30px;
+        border-radius: 4px;
+        margin-bottom: 20px;
         padding-left: 10px;
       }
-      input {
-        background: none;
-        outline: none;
-        border: none;
-        border-bottom: 2px solid #ffffff;
-        color: #ffffff;
-        padding: 8px;
-        font-size: 20px;
+      .input_age_add,
+      .input_age_edit {
+        width: 39%;
+        height: 30px;
+        border-radius: 4px;
+        margin-bottom: 20px;
+        padding-left: 10px;
       }
-      .list-todo {
-        height: 60vh;
-        background-color: #ffffff;
-        overflow-x: scroll;
+      .input_phone_add,
+      .input_phone_edit {
+        width: 39%;
+        height: 30px;
+        border-radius: 4px;
+        margin-bottom: 20px;
+        padding-left: 10px;
       }
-      #todo {
-        padding: 0 10px 0 10px;
-      }
-      #todo li {
-        list-style: none;
-        font-size: 16px;
-        width: 100%;
-        max-width: 100%;
-        display: flex;
-        --webkit-display: flex;
-        align-items: flex-start;
-        text-align: justify;
-        margin-bottom: 15px;
-        border-bottom: 1px solid #777777;
-        padding-bottom: 8px;
-      }
-      #todo li.completed {
-        text-decoration: line-through;
-      }
-
-      #todo li.uncompleted {
-        text-decoration: none;
-        color: black;
-      }
-      #todo li input {
-        margin-right: 10px;
-      }
-      #todo li .editButton {
-        margin-right: 5px;
-        margin-left: auto;
-        outline: none;
-        border: none;
-        border-radius: 200px;
-        background-color: #3366ff;
-        color: #ffffff;
-        width: 20%;
-        height: 5vh;
-      }
-      #todo li .deleteButton {
-        outline: none;
-        border: none;
-        border-radius: 200px;
-        background-color: #ff3333;
-        color: #ffffff;
-        width: 20%;
-        height: 5vh;
-      }
-      .submit {
-        width: 40%;
-        height: 50px;
-        background-color: #ffd333;
-        border-radius: 5px;
-        margin: 10px 20px 10px 20px;
-      }
-      .handleButton {
-        width: 10px;
-        background-color: #ffd333;
-      }
-      .inputEdit {
-        background-color: #00ff08;
-        color: #181818;
+      .input_avatar_add,
+      .input_avatar_edit {
+        width: 85%;
+        height: 30px;
+        border-radius: 4px;
+        margin-bottom: 20px;
+        padding-top: 8px;
+        border: 2px solid black;
+        background-color: orange;
+        justify-content: center;
+        text-align: center;
+        align-items: center;
       }
     </style>
   </head>
@@ -191,8 +242,45 @@
     <div class="modal">
       <div class="modal-content">
         <div class="modal-header">
-          <h3>EDIT</h3>
+          <h1 class="title_modal">EDIT LOVER INFORMATION</h1>
           <label for="control-modal" class="modal-close">X</label>
+          <div class="input_edit_form" id="input_edit_form"></div>
+        </div>
+        <div class="modal-body">
+          <div id="edit_modal"></div>
+        </div>
+      </div>
+    </div>
+    <input type="checkbox" id="control-modal-add" class="inputCheckbox" />
+    <div class="modal_add">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="title_modal">ADD LOVER INFORMATION</h1>
+          <label for="control-modal-add" class="modal-close">X</label>
+          <div class="input_add_form">
+            <input
+              type="text"
+              class="input_name_add"
+              id="input_name_add"
+              placeholder="Enter name lover"
+            />
+            <input
+              type="number"
+              class="input_age_add"
+              id="input_age_add"
+              placeholder="Enter age lover"
+            />
+            <input
+              type="number"
+              class="input_phone_add"
+              id="input_phone_add"
+              placeholder="Enter phone lover"
+            />
+            <input id="input_avatar_add" type="file" class="input_avatar_add" />
+            <button class="submit_add_button" onclick="addLover()">
+              <b>SUBMIT</b>
+            </button>
+          </div>
         </div>
         <div class="modal-body">
           <div id="edit_modal"></div>
@@ -200,66 +288,138 @@
       </div>
     </div>
     <div class="container">
-      <div class="todo">
-        <h1>Todo</h1>
-        <p>What do you want to get done today?</p>
-        <input type="text" id="input" placeholder="Enter task" />
-        <br/ >
-        <button class="submit" id="input" onclick="addTodo()">Submit</button>
-      </div>
-      <div class="list-todo">
-        <ul id="todo"></ul>
-      </div>
+      <h1><b style="color: magenta">LIST OF MY LOVERS</b></h1>
+      <ul class="responsive-table">
+        <button class="create_button">
+          <label for="control-modal-add"><b>ADD LOVER</b></label>
+        </button>
+        <li class="table-header">
+          <div
+            class="col col-1"
+            style="justify-content: center; text-align: center"
+          >
+            <b>ID</b>
+          </div>
+          <div
+            class="col col-3"
+            style="justify-content: center; text-align: center"
+          >
+            <b>NAME</b>
+          </div>
+          <div
+            class="col col-3"
+            style="justify-content: center; text-align: center"
+          >
+            <b>AVATAR</b>
+          </div>
+          <div
+            class="col col-2"
+            style="justify-content: center; text-align: center"
+          >
+            <b>AGE</b>
+          </div>
+          <div
+            class="col col-2"
+            style="justify-content: center; text-align: center"
+          >
+            <b>PHONE</b>
+          </div>
+          <div
+            class="col col-3"
+            style="justify-content: center; text-align: center"
+          >
+            <b>ACTION</b>
+          </div>
+        </li>
+        <div id="data_read_lover"></div>
+      </ul>
     </div>
     <script>
-      let todoList = [];
-      if (localStorage.getItem("todos")) {
-        todoList = JSON.parse(localStorage.getItem("todos"));
+      let loverList = [];
+      if (localStorage.getItem("lovers")) {
+        loverList = JSON.parse(localStorage.getItem("lovers"));
       } else {
-        localStorage.setItem("todos", JSON.stringify(todoList));
+        localStorage.setItem("lovers", JSON.stringify(loverList));
       }
-      const addTodo = () => {
-        var newTodo = document.getElementById("input").value;
-        todoList.push(newTodo);
-        localStorage.setItem("todos", JSON.stringify(todoList));
+      const addLover = () => {
+        var newLover = {
+          name: "",
+          age: 0,
+          avatar: "",
+          phone: 0,
+        };
+        newLover.name = document.getElementById("input_name_add").value;
+        newLover.age = document.getElementById("input_age_add").value;
+        newLover.phone = document.getElementById("input_phone_add").value;
+        newLover.avatar = document.getElementById("input_avatar_add").value;
+        loverList.push(newLover);
+        localStorage.setItem("lovers", JSON.stringify(loverList));
         window.location.reload();
       };
-      const readTodo = () => {
+
+      const readLover = () => {
         let show = "";
-        for (var i in todoList) {
-          show += "<li>";
-          show += todoList[i];
-          show += `<button class="editButton" onclick="onEdit(${i})"><label for="control-modal">Edit</label></button>`;
-          show += `<button class="deleteButton" onclick="deleteTodo(${i})">Delete</button>`;
+        for (var i in loverList) {
+          show += '<li class="table-row">';
+          show += `<div class="col col-1" style="justify-content: center;text-align: center;margin-top: auto;margin-bottom: auto;">${i}</div>`;
+          show += `<div class="col col-3" style="justify-content: center;text-align: center;margin-top: auto;margin-bottom: auto;">${loverList[i].name}</div>`;
+          show += `<div class="col col-3" style="justify-content: center;text-align: center;margin-top: auto;margin-bottom: auto;">`;
+          show += `<img src="https://pdp.edu.vn/wp-content/uploads/2021/06/hinh-anh-gai-xinh-de-thuong-nhat-1.jpg" style="width: 100px; height: 100px;border-radius: 4px;"/>`;
+          show += "</div>";
+          show += `<div class="col col-2" style="justify-content: center;text-align: center;margin-top: auto;margin-bottom: auto;">${loverList[i].age}</div>`;
+          show += `<div class="col col-2" style="justify-content: center;text-align: center;margin-top: auto;margin-bottom: auto;"  >${loverList[i].phone}</div>`;
+          show += `<div class="col col-3" style="justify-content: center;text-align: center;margin-top: auto;margin-bottom: auto;">`;
+          show += `<button class="edit_button" onclick="onEdit(${i})">`;
+          show += `<label for="control-modal"><b>EDIT</b></label></button><button onclick="deleteLover(${i})" class="delete_button"><b>DELETE</b></button>`;
+          show += "</div>";
           show += "</li>";
         }
-        document.getElementById("todo").innerHTML = show;
+        document.getElementById("data_read_lover").innerHTML = show;
       };
-      const editTodo = (index) => {
-        for (var i in todoList) {
+
+      const editLover = (index) => {
+        for (var i in loverList) {
           if (i == index) {
-            todoList[i] = document.getElementById("inputEdit").value;
+            loverList[i].name =
+              document.getElementById("input_name_edit").value;
+            loverList[i].age = document.getElementById("input_age_edit").value;
+            loverList[i].phone =
+              document.getElementById("input_phone_edit").value;
           }
         }
-        localStorage.setItem("todos", JSON.stringify(todoList));
+        localStorage.setItem("lovers", JSON.stringify(loverList));
         window.location.reload();
       };
+
       const onEdit = (index) => {
         let dataEdit = "";
-        for (var i in todoList) {
+        for (var i in loverList) {
           if (i == index) {
-            dataEdit += `<input type="text" id="inputEdit" class="inputEdit" value="${todoList[i]}" />`;
-            dataEdit += `<button class="submit" id="input" onclick="editTodo(${i})">Submit</button>`;
+            dataEdit += `<input type="text" class="input_name_edit" id="input_name_edit" value="${loverList[i].name}"/>`;
+            dataEdit += `<input type="number" class="input_age_edit" id="input_age_edit" value="${loverList[i].age}"/>`;
+            dataEdit += `<input
+              type="number"
+              class="input_phone_edit"
+              id="input_phone_edit"
+              value="${loverList[i].phone}"
+            />
+            <input
+              type="file"
+              class="input_avatar_edit"
+              id="input_avatar_edit"
+            />`;
+            dataEdit += `<button class="submit_edit_button" onclick="editLover(${i})"><b>SUBMIT</b></button>`;
           }
-          document.getElementById("edit_modal").innerHTML = dataEdit;
+          document.getElementById("input_edit_form").innerHTML = dataEdit;
         }
       };
-      const deleteTodo = (index) => {
-        todoList.splice(index, 1);
-        localStorage.setItem("todos", JSON.stringify(todoList));
+
+      const deleteLover = (index) => {
+        loverList.splice(index, 1);
+        localStorage.setItem("lovers", JSON.stringify(loverList));
         window.location.reload();
       };
-      readTodo();
+      readLover();
     </script>
   </body>
-</html>
+</html>s
